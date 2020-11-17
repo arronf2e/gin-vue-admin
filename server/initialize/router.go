@@ -45,6 +45,7 @@ func Routers() *gin.Engine {
 
 	router.InitWxCustomerRouter(ApiGroup)
 	router.InitGarageRouter(ApiGroup)
+	router.InitServiceTypeRouter(ApiGroup)
 
 	global.GVA_LOG.Info("router register success")
 	return Router

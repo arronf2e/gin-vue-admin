@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="search-term">
-      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">              
+      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">  
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增汽修店</el-button>
+          <el-button @click="openDialog" type="primary">新增经营范围</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -34,28 +34,16 @@
          <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
     </el-table-column>
     
-    <el-table-column label="汽修店名称" prop="name" width="120"></el-table-column> 
-    
-    <el-table-column label="位置" prop="location" width="120"></el-table-column> 
-    
-    <el-table-column label="营业时间 " prop="openingHours" width="120"></el-table-column> 
-    
-    <el-table-column label="经营范围" prop="businessScope" width="120"></el-table-column> 
-    
-    <el-table-column label="联系人" prop="contacter" width="120"></el-table-column> 
-    
-    <el-table-column label="联系电话" prop="contact" width="120"></el-table-column> 
-    
-    <el-table-column label="店铺详情" prop="detail" width="120"></el-table-column> 
+    <el-table-column label="经营范围" prop="name" width="120"></el-table-column> 
     
       <el-table-column label="按钮组">
         <template slot-scope="scope">
-          <el-button class="table-button" @click="updateGarage(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
+          <el-button class="table-button" @click="updateServiceType(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
           <el-popover placement="top" width="160" v-model="scope.row.visible">
             <p>确定要删除吗？</p>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="deleteGarage(scope.row)">确定</el-button>
+              <el-button type="primary" size="mini" @click="deleteServiceType(scope.row)">确定</el-button>
             </div>
             <el-button type="danger" icon="el-icon-delete" size="mini" slot="reference">删除</el-button>
           </el-popover>
@@ -75,33 +63,9 @@
     ></el-pagination>
 
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
-      <el-form :model="formData" label-position="right" label-width="120px">
-         <el-form-item label="汽修店名称:">
-            <el-input v-model="formData.name" clearable placeholder="请输入" ></el-input>
-      </el-form-item>
-       
-         <el-form-item label="位置:">
-            <el-input v-model="formData.location" clearable placeholder="请输入" ></el-input>
-      </el-form-item>
-       
-         <el-form-item label="营业时间 :">
-            <el-input v-model="formData.openingHours" clearable placeholder="请输入" ></el-input>
-      </el-form-item>
-       
+      <el-form :model="formData" label-position="right" label-width="80px">
          <el-form-item label="经营范围:">
-            <el-input v-model="formData.businessScope" clearable placeholder="请输入" ></el-input>
-      </el-form-item>
-       
-         <el-form-item label="联系人:">
-            <el-input v-model="formData.contacter" clearable placeholder="请输入" ></el-input>
-      </el-form-item>
-       
-         <el-form-item label="联系电话:">
-            <el-input v-model="formData.contact" clearable placeholder="请输入" ></el-input>
-      </el-form-item>
-       
-         <el-form-item label="店铺详情:">
-            <el-input v-model="formData.detail" clearable placeholder="请输入" ></el-input>
+            <el-input v-model="formData.name" clearable placeholder="请输入" ></el-input>
       </el-form-item>
        </el-form>
       <div class="dialog-footer" slot="footer">
@@ -114,33 +78,27 @@
 
 <script>
 import {
-    createGarage,
-    deleteGarage,
-    deleteGarageByIds,
-    updateGarage,
-    findGarage,
-    getGarageList
-} from "@/api/xiu_garage";  //  此处请自行替换地址
+    createServiceType,
+    deleteServiceType,
+    deleteServiceTypeByIds,
+    updateServiceType,
+    findServiceType,
+    getServiceTypeList
+} from "@/api/xiu_service_type";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
 import infoList from "@/mixins/infoList";
 export default {
-  name: "Garage",
+  name: "ServiceType",
   mixins: [infoList],
   data() {
     return {
-      listApi: getGarageList,
+      listApi: getServiceTypeList,
       dialogFormVisible: false,
       visible: false,
       type: "",
       deleteVisible: false,
       multipleSelection: [],formData: {
             name:"",
-            location:"",
-            openingHours:"",
-            businessScope:"",
-            contacter:"",
-            contact:"",
-            detail:"",
             
       }
     };
@@ -166,7 +124,7 @@ export default {
       //条件搜索前端看此方法
       onSubmit() {
         this.page = 1
-        this.pageSize = 10           
+        this.pageSize = 10     
         this.getTableData()
       },
       handleSelectionChange(val) {
@@ -185,7 +143,7 @@ export default {
           this.multipleSelection.map(item => {
             ids.push(item.ID)
           })
-        const res = await deleteGarageByIds({ ids })
+        const res = await deleteServiceTypeByIds({ ids })
         if (res.code == 0) {
           this.$message({
             type: 'success',
@@ -195,11 +153,11 @@ export default {
           this.getTableData()
         }
       },
-    async updateGarage(row) {
-      const res = await findGarage({ ID: row.ID });
+    async updateServiceType(row) {
+      const res = await findServiceType({ ID: row.ID });
       this.type = "update";
       if (res.code == 0) {
-        this.formData = res.data.regarage;
+        this.formData = res.data.reserviceType;
         this.dialogFormVisible = true;
       }
     },
@@ -207,18 +165,12 @@ export default {
       this.dialogFormVisible = false;
       this.formData = {
           name:"",
-          location:"",
-          openingHours:"",
-          businessScope:"",
-          contacter:"",
-          contact:"",
-          detail:"",
           
       };
     },
-    async deleteGarage(row) {
+    async deleteServiceType(row) {
       this.visible = false;
-      const res = await deleteGarage({ ID: row.ID });
+      const res = await deleteServiceType({ ID: row.ID });
       if (res.code == 0) {
         this.$message({
           type: "success",
@@ -231,13 +183,13 @@ export default {
       let res;
       switch (this.type) {
         case "create":
-          res = await createGarage(this.formData);
+          res = await createServiceType(this.formData);
           break;
         case "update":
-          res = await updateGarage(this.formData);
+          res = await updateServiceType(this.formData);
           break;
         default:
-          res = await createGarage(this.formData);
+          res = await createServiceType(this.formData);
           break;
       }
       if (res.code == 0) {
