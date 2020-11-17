@@ -43,6 +43,9 @@ func Routers() *gin.Engine {
 	router.InitSysOperationRecordRouter(ApiGroup)    // 操作记录
 	router.InitEmailRouter(ApiGroup)                 // 邮件相关路由
 
+	router.InitWxCustomerRouter(ApiGroup)
+	router.InitGarageRouter(ApiGroup)
+
 	global.GVA_LOG.Info("router register success")
 	return Router
 }
