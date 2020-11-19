@@ -54,6 +54,17 @@ auth(Vue)
 import uploader from 'vue-simple-uploader'
 Vue.use(uploader)
 
+// amap
+import VueAMap from 'vue-amap'
+Vue.use(VueAMap)
+
+VueAMap.initAMapApiLoader({
+    key: 'cb7ca67d15ca622c7cafa22e663607ca',
+    plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+    // 默认高德 sdk 版本为 1.4.4
+    v: '1.4.4'
+  })
+
 export default new Vue({
     render: h => h(App),
     router,

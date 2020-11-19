@@ -43,7 +43,9 @@ export default {
     // },
     onEditorBlur() {}, // 失去焦点事件
     onEditorFocus() {}, // 获得焦点事件
-    onEditorChange() {}, // 内容改变事件
+    onEditorChange(e) {
+      console.log(e, 'e')
+    }, // 内容改变事件
     saveHtml() {
       console.log(this.content)
     }, // 保存方法
